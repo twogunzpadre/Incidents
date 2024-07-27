@@ -23,8 +23,10 @@ df['country'] = df['country'].astype(str)
 sorted_years = sorted(df['year'].unique())
 df = df.dropna()
 
+
 # Initialize the Dash app
 app = dash.Dash(__name__)
+server = app.server
 
 app.layout = html.Div([
     html.Div([
@@ -263,4 +265,5 @@ def update_input_container6(selected_country, selected_year, selected_button):
     R_chart6 = dcc.Graph(figure=map_fig)
     return [html.Div(className='chart-item', children=[R_chart6], style={'display': 'flex'})]
 # Run the Dash app
-server = app.server
+if __name__ == "__main__":
+	app.run_server(debug=False)
