@@ -19,4 +19,4 @@ packaging==23.2
 pandas==2.2.2
 plotly==5.20.0
 requests==2.31.0
-zipfile
+zipfile2
