@@ -6,6 +6,8 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.graph_objs as go
 import plotly.express as px
+import zipfile2 
+
 
 def read_csv_from_zip(zip_path, csv_file_name):
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
