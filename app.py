@@ -7,20 +7,32 @@ import pandas as pd
 import plotly.graph_objs as go
 import plotly.express as px
 import zipfile
+import requests
+import io
 
 
-def read_csv_from_zip(zip_path, csv_file_name):
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+def read_csv_from_url_zip(url, csv_file_name):
+    # Download the zip file from the URL
+    response = requests.get(url)
+    response.raise_for_status()  # Ensure the request was successful
+
+    # Read the zip file from the response content
+    zip_file = io.BytesIO(response.content)
+
+    # Extract and read the CSV file
+    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
         with zip_ref.open(csv_file_name) as csv_file:
             df = pd.read_csv(csv_file)
             return df
 
 # Usage
-zip_path = 'https://raw.githubusercontent.com/twogunzpadre/Incidents/main/WarConflicts.zip'  # Path to your zip file
-csv_file_name = 'WarConflicts.csv'  # Name of the CSV file inside the zip
+url = 'https://raw.githubusercontent.com/twogunzpadre/Incidents/main/WarConflicts.zip'  # Correct URL to the raw zip file
+csv_file_name = 'WarConflicts.csv'
+
+
 
 # Read the CSV file from the zip archive
-df = read_csv_from_zip(zip_path, csv_file_name)
+df = read_csv_from_url_zip(url, csv_file_name)
 df['country'] = df['country'].astype(str)
 sorted_years = sorted(df['year'].unique())
 df = df.dropna()
